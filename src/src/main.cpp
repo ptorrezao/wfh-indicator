@@ -28,6 +28,8 @@ CRGB leds[NUM_LEDS];
 #include <AsyncMqttClient.h>
 #include <ArduinoJson.h>
 
+String SSID="";
+String mqttTopicPrefix = "presenceindicator/";
 GxIO_Class io(SPI, SS, 17, 16);
 GxEPD_Class display(io, 16, 4);
 
@@ -118,7 +120,9 @@ void initializeNetwork()
   display.update();
   display.setTextColor(GxEPD_BLACK);
   display.setCursor(0, 15);
-
+  
+  SSID = wifiManager.getWiFiSSID();
+  
   SetText("SSID:", wifiManager.getWiFiSSID());
   SetText("IP:", WiFi.localIP().toString());
   SetText("Mac:", WiFi.macAddress());
@@ -160,10 +164,36 @@ void connectToMqtt()
 
 void onMqttConnect(bool sessionPresent)
 {
+  String macAddress = WiFi.macAddress();
+  macAddress.replace(":", "");
+
+  char jsonChar[150];
+  StaticJsonDocument<256> doc;
+  JsonObject object = doc.to<JsonObject>();
+  object["Device"] = macAddress;
+  object["Network"] = SSID;
+  
+  serializeJson(doc, jsonChar);
+
+  char mqttTopic[80];
+
+  String deviceList = mqttTopicPrefix + "devices";
+  deviceList.toCharArray(mqttTopic,80);
+
+  mqttClient.publish(mqttTopic, 0, true, jsonChar);
+  Serial.println("Publishing at QoS 0");
+  
+  String completeMqttTopic = mqttTopicPrefix + macAddress;
+
+  Serial.println("Subscribe to "+ completeMqttTopic);
+
+  completeMqttTopic.toCharArray(mqttTopic,80);
+
+  uint16_t packetIdSub = mqttClient.subscribe(mqttTopic, 2);
   Serial.println("Connected to MQTT.");
-  uint16_t packetIdSub = mqttClient.subscribe("presenceindicator/ptorrezao", 2);
-  Serial.print("Subscribing at QoS 2, packetId: ");
   Serial.println(packetIdSub);
+
+
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason)
@@ -235,9 +265,11 @@ void WiFiEvent(WiFiEvent_t event)
 
 void setup()
 {
+  
   cleanScreen();
   initializeLed();
   initializeNetwork();
+
 
   mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE, (void *)0, reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
 
