@@ -13,8 +13,13 @@ Images | &nbsp; | &nbsp;
 
 ## How I build one
 ### Wiring 
+*With Conectors*
+![1](wiring/presenceIndicator.png)
+*Without Connectors*
+![2](wiring/presenceIndicatorWithConnectors.png)
 
 
+![2](wiring/board.png)
 ### Bill of Materials
 Item                                  | Qtd | Price | Link
 --------------------------------------|-----|-------|--------
