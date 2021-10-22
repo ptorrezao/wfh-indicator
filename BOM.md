@@ -1,26 +1,5 @@
-# Presence Indicator
+## Bill of Materials
 
-## What it is
-
-## How it looks
-
-Images | &nbsp; | &nbsp;
---- | ---  | ---
-![1](case/img/1.png)|![2](case/img/2.png)|![3](case/img/3.png)|
-![4](case/img/4.png)|![5](case/img/5.png)|![6](case/img/6.png)
-
-## How it works
-
-## How I build one
-### Wiring 
-*With Conectors*
-![1](wiring/presenceIndicator.png)
-*Without Connectors*
-![2](wiring/presenceIndicatorWithConnectors.png)
-
-
-![2](wiring/board.png)
-### Bill of Materials
 Item                                  | Qtd | Price | Link
 --------------------------------------|-----|-------|--------
 WS2812 LED 5050 RGB 8x8 Matrix Module |    1|  4,48€| [AliExpress](https://pt.aliexpress.com/item/32600043941.html?spm=a2g0s.9042311.0.0.dcd4b90aCjbDpy)
