@@ -19,7 +19,7 @@ Images | &nbsp; | &nbsp;
 ![2](wiring/presenceIndicatorWithConnectors.png)
 
 
-![2](wiring/board.png)
+![3](wiring/board.PNG)
 ### Bill of Materials
 Item                                  | Qtd | Price | Link
 --------------------------------------|-----|-------|--------
